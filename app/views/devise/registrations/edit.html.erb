@@ -7,6 +7,7 @@
     <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
   <% end %>
   <%= f.text_field :name, autocomplete: "off" %>
+  <%= f.select :gender, User.genders.keys.to_a, {} %>
   <%= f.date_field :birthday, autocomplete: "off" %>
   <%= f.text_field :school, autocomplete: "off" %>
   <%= f.password_field :password, autocomplete: "off" %>
