@@ -15,7 +15,7 @@
           <% if user_signed_in? %>
             <strong><%= link_to current_user.name, users_path %></strong>
             <%= link_to 'Profile', edit_user_registration_path %>
-            <%= link_to 'Interview', interviews_path %>
+            <%= link_to 'Interview', user_interviews_path(current_user) %>
             <%= link_to 'Logout', destroy_user_session_path, method: :delete %>
           <% else %>
             <%= link_to 'Sign up', new_user_registration_path %>
