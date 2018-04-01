@@ -24,7 +24,7 @@ class InterviewsController < ApplicationController
   # POST /interviews
   # POST /interviews.json
   def create
-    @interview = Interview.new(interview_params)
+    @interview = current_user.interviews.new(interview_params)
 
     respond_to do |format|
       if @interview.save
