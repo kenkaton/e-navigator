@@ -4,7 +4,7 @@ class InterviewsController < ApplicationController
   # GET /interviews
   # GET /interviews.json
   def index
-    @interviews = Interview.where(user_id: current_user.id)
+    @interviews = Interview.where(user_id: params[:user_id])
   end
 
   # GET /interviews/1
