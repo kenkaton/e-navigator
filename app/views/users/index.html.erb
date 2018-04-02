@@ -1,3 +1,32 @@
 <p class="notice"><%= notice %></p>
 <h1>Users#index</h1>
 <p>Find me in app/views/users/index.html.erb</p>
+
+<h1>Users</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Age</th>
+      <th>Gender</th>
+      <th>school</th>
+      <th>Interview Datetime</th>
+      <th colspan="7"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.name %></td>
+        <td><%= user.email %></td>
+        <td><%= user.birthday %></td>
+        <td><%= user.gender %></td>
+        <td><%= user.school %></td>
+        <td><%= user.interviews.first %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
