@@ -13,7 +13,7 @@
       <th>Gender</th>
       <th>school</th>
       <th>Interview Datetime</th>
-      <th colspan="7"></th>
+      <th></th>
     </tr>
   </thead>
 
@@ -25,7 +25,8 @@
         <td><%= user.birthday %></td>
         <td><%= user.gender %></td>
         <td><%= user.school %></td>
-        <td><%= user.interviews.first %></td>
+        <td><%= user.interviews[0].date  if user.interviews[0]%></td>
+        <th><%= link_to 'List', user_interviews_path(user) %></th>
       </tr>
     <% end %>
   </tbody>
