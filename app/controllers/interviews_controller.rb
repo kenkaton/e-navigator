@@ -1,6 +1,6 @@
 class InterviewsController < ApplicationController
   before_action :set_interview, only: [:show, :edit, :update, :destroy]
-  before_action :correct_user,  only: [:edit, :create, :update, :destroy]
+  before_action :correct_user,  only: [:new, :edit, :create, :update, :destroy]
 
   # GET /interviews
   # GET /interviews.json
@@ -74,8 +74,8 @@ class InterviewsController < ApplicationController
     end
 
     def correct_user
-      @interview = Interview.find(params[:id])
-      unless @interview.user_id == current_user.id
+      @user = User.find(params[:user_id])
+      unless @user.id == current_user.id
         redirect_to(user_interviews_url)
         flash[:notice] = "You can't edit and delete it."
       end
