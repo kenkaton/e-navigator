@@ -1,0 +1,6 @@
+<h1>Editing Interview</h1>
+
+<%= render 'form', interview: @interview %>
+
+<%= link_to 'Show', user_interview_path(@interview.user, @interview) %> |
+<%= link_to 'Back', user_interviews_path(@interview.user) %>

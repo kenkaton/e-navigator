@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Date:</strong>
+  <%= @interview.date %>
+</p>
+
+<p>
+  <strong>Approval:</strong>
+  <%= @interview.approval %>
+</p>
+
+<%= link_to 'Edit', edit_user_interview_path(@interview.user, @interview) %> |
+<%= link_to 'Back', user_interviews_path(@interview.user) %>
