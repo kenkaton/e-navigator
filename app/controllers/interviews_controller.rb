@@ -1,10 +1,11 @@
 class InterviewsController < ApplicationController
   before_action :set_interview, only: [:show, :edit, :update, :destroy]
+  before_action :correct_user,  only: [:new, :edit, :create, :update, :destroy]
 
   # GET /interviews
   # GET /interviews.json
   def index
-    @interviews = Interview.where(user_id: current_user.id)
+    @interviews = Interview.where(user_id: params[:user_id])
   end
 
   # GET /interviews/1
@@ -70,5 +71,13 @@ class InterviewsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def interview_params
       params.require(:interview).permit(:date, :approval)
+    end
+
+    def correct_user
+      @user = User.find(params[:user_id])
+      unless @user.id == current_user.id
+        redirect_to(user_interviews_url)
+        flash[:notice] = "You can't edit and delete it."
+      end
     end
 end
