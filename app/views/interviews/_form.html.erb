@@ -1,4 +1,4 @@
-<%= form_with(model: [ :user, @interview ], local: true) do |form| %>
+<%= form_with(model: [ current_user, interview ], local: true) do |form| %>
   <% if interview.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(interview.errors.count, "error") %> prohibited this interview from being saved:</h2>
