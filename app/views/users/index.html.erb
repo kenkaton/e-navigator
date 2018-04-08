@@ -23,7 +23,7 @@
         <td><%= user.birthday %></td>
         <td><%= user.gender %></td>
         <td><%= user.school %></td>
-        <td><%= user.interviews[0].date  if user.interviews[0]%></td>
+        <td><%= user.interviews.find_by(approval: 'approve')&.date  || 'Undecided' %></td>
         <th><%= link_to 'List', user_interviews_path(user) %></th>
       </tr>
     <% end %>
