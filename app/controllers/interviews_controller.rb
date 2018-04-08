@@ -1,6 +1,7 @@
 class InterviewsController < ApplicationController
   before_action :set_interview, only: [:show, :edit, :update, :destroy]
-  before_action :correct_user,  only: [:new, :edit, :create, :update, :destroy]
+  before_action :set_user,      only: [:index, :new, :edit, :create, :update, :destroy]
+  before_action :correct_user,  only: [:new, :edit, :create, :destroy]
 
   # GET /interviews
   # GET /interviews.json
@@ -73,10 +74,13 @@ class InterviewsController < ApplicationController
       params.require(:interview).permit(:date, :approval)
     end
 
-    def correct_user
+    def set_user
       @user = User.find(params[:user_id])
+    end
+
+    def correct_user
       unless @user.id == current_user.id
-        redirect_to(user_interviews_url)
+        redirect_to(user_interviews_url(@user))
         flash[:notice] = "You can't edit and delete it."
       end
     end
