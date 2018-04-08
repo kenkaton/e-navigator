@@ -7,6 +7,7 @@ class InterviewsController < ApplicationController
   # GET /interviews.json
   def index
     @interviews = Interview.where(user_id: params[:user_id])
+    @scheduled_interview = Interview.find_by(approval: 1 )
   end
 
   # GET /interviews/1
