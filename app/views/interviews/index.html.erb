@@ -1,8 +1,8 @@
 <p id="notice"><%= notice %></p>
 
 <h1><%= @user.name %>'s Interviews</h1>
-<% if current_user.id.to_s == params[:user_id] %>
-  <%= render partial: "own_interviews", locals: {user: @user, interviews: @interviews} %>
+<% if current_user == @user %>
+  <%= render partial: "own_interviews", locals: {interviews: @interviews} %>
 <% else %>
   <%= render partial: "other_interviews", locals: {user: @user, interviews: @interviews, scheduled_interview: @scheduled_interview} %>
 <% end %>
