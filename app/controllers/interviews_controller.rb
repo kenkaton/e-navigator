@@ -32,10 +32,8 @@ class InterviewsController < ApplicationController
     respond_to do |format|
       if @interview.save
         format.html { redirect_to user_interviews_path(@user), notice: 'Interview was successfully created.' }
-        format.json { render :show, status: :created, location: @interview }
       else
         format.html { render :new }
-        format.json { render json: @interview.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -46,11 +44,9 @@ class InterviewsController < ApplicationController
     respond_to do |format|
       if @interview.update(interview_params)
         format.html { redirect_to user_interviews_path(@user), notice: 'Interview was successfully updated.' }
-        format.json { render :show, status: :ok, location: @interview }
       else
         if @user.id == current_user.id
           format.html { render :edit }
-          format.json { render json: @interview.errors, status: :unprocessable_entity }
         else
           format.html {
             redirect_to user_interviews_path(@user),
@@ -66,8 +62,10 @@ class InterviewsController < ApplicationController
   def destroy
     respond_to do |format|
       if @interview.destroy
-        format.html { redirect_to user_interviews_url(@user), notice: 'Interview was successfully destroyed.' }
-        format.json { head :no_content }
+        format.html {
+          redirect_to user_interviews_path(@user),
+          notice: 'Interview was successfully destroyed.'
+        }
       else
         format.html {
           redirect_to user_interviews_path(@user),
