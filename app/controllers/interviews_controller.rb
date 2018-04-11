@@ -32,10 +32,8 @@ class InterviewsController < ApplicationController
     respond_to do |format|
       if @interview.save
         format.html { redirect_to user_interviews_path(@user), notice: 'Interview was successfully created.' }
-        format.json { render :show, status: :created, location: @interview }
       else
         format.html { render :new }
-        format.json { render json: @interview.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -46,10 +44,15 @@ class InterviewsController < ApplicationController
     respond_to do |format|
       if @interview.update(interview_params)
         format.html { redirect_to user_interviews_path(@user), notice: 'Interview was successfully updated.' }
-        format.json { render :show, status: :ok, location: @interview }
       else
-        format.html { render :edit }
-        format.json { render json: @interview.errors, status: :unprocessable_entity }
+        if @user.id == current_user.id
+          format.html { render :edit }
+        else
+          format.html {
+            redirect_to user_interviews_path(@user),
+            notice: "The schedule can't be edited because it has already been approved or rejected."
+          }
+        end
       end
     end
   end
@@ -57,10 +60,18 @@ class InterviewsController < ApplicationController
   # DELETE /interviews/1
   # DELETE /interviews/1.json
   def destroy
-    @interview.destroy
     respond_to do |format|
-      format.html { redirect_to user_interviews_url(@user), notice: 'Interview was successfully destroyed.' }
-      format.json { head :no_content }
+      if @interview.destroy
+        format.html {
+          redirect_to user_interviews_path(@user),
+          notice: 'Interview was successfully destroyed.'
+        }
+      else
+        format.html {
+          redirect_to user_interviews_path(@user),
+          notice: "The schedule can't be edited because it has already been approved or rejected."
+        }
+      end
     end
   end
 
