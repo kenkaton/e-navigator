@@ -1,3 +1,5 @@
-User#apply
+<%= @user.name %> requests confirmation of the interview date.
 
-<%= @greeting %>, find me in app/views/user_mailer/apply.text.erb
+Please approve the interview date from the following URL.
+
+<%= user_interviews_url(@user) %>

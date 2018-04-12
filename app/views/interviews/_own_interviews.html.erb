@@ -22,4 +22,9 @@
 
 <br>
 
+<%= form_with(url: apply_user_interviews_path(current_user), local: true)  do |form| %>
+  <%= form.select :mail_to, User.where.not(id: current_user.id).map{|i| [i.email, i.id]} %>
+  <%= form.submit value: 'Apply' %>
+<% end %>
+
 <%= link_to 'New Interview', new_user_interview_path(current_user) %>

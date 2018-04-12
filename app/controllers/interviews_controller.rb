@@ -1,6 +1,6 @@
 class InterviewsController < ApplicationController
   before_action :set_interview, only: [:show, :edit, :update, :destroy]
-  before_action :set_user,      only: [:index, :show, :new, :edit, :create, :update, :destroy]
+  before_action :set_user,      only: [:index, :show, :new, :edit, :create, :update, :destroy, :apply]
   before_action :correct_user,  only: [:new, :edit, :create, :destroy]
 
   # GET /interviews
@@ -73,6 +73,12 @@ class InterviewsController < ApplicationController
         }
       end
     end
+  end
+
+  def apply
+    UserMailer.apply(User.find(params[:mail_to])).deliver
+    redirect_to user_interviews_path(@user),
+    notice: "Email was successfully sent to #{User.find(params[:mail_to]).email}"
   end
 
   private

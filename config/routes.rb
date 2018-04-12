@@ -10,7 +10,9 @@ Rails.application.routes.draw do
   end
   resources :users
   resources :users do
-    resources :interviews
+    resources :interviews do
+      post :apply, on: :collection
+    end
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
