@@ -84,4 +84,8 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  config.action_controller.asset_host = 'https://e-navigator-kenkaton.herokuapp.com'
+  config.action_mailer.asset_host = config.action_controller.asset_host
+  config.action_mailer.default_url_options = { host: 'e-navigator-kenkaton.herokuapp.com' }
 end
