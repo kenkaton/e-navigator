@@ -1,11 +1,13 @@
 class InterviewsController < ApplicationController
   before_action :set_interview, only: [:show, :edit, :update, :destroy]
-  before_action :correct_user,  only: [:new, :edit, :create, :update, :destroy]
+  before_action :set_user,      only: [:index, :show, :new, :edit, :create, :update, :destroy]
+  before_action :correct_user,  only: [:new, :edit, :create, :destroy]
 
   # GET /interviews
   # GET /interviews.json
   def index
-    @interviews = Interview.where(user_id: params[:user_id])
+    @interviews = Interview.where(user_id: params[:user_id]).order(:date)
+    @scheduled_interview = @interviews.find_by(approval: 1 )
   end
 
   # GET /interviews/1
@@ -29,11 +31,9 @@ class InterviewsController < ApplicationController
 
     respond_to do |format|
       if @interview.save
-        format.html { redirect_to user_interviews_path(current_user), notice: 'Interview was successfully created.' }
-        format.json { render :show, status: :created, location: @interview }
+        format.html { redirect_to user_interviews_path(@user), notice: 'Interview was successfully created.' }
       else
         format.html { render :new }
-        format.json { render json: @interview.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -43,11 +43,16 @@ class InterviewsController < ApplicationController
   def update
     respond_to do |format|
       if @interview.update(interview_params)
-        format.html { redirect_to user_interviews_path(current_user), notice: 'Interview was successfully updated.' }
-        format.json { render :show, status: :ok, location: @interview }
+        format.html { redirect_to user_interviews_path(@user), notice: 'Interview was successfully updated.' }
       else
-        format.html { render :edit }
-        format.json { render json: @interview.errors, status: :unprocessable_entity }
+        if @user.id == current_user.id
+          format.html { render :edit }
+        else
+          format.html {
+            redirect_to user_interviews_path(@user),
+            notice: "The schedule can't be edited because it has already been approved or rejected."
+          }
+        end
       end
     end
   end
@@ -55,14 +60,23 @@ class InterviewsController < ApplicationController
   # DELETE /interviews/1
   # DELETE /interviews/1.json
   def destroy
-    @interview.destroy
     respond_to do |format|
-      format.html { redirect_to user_interviews_url, notice: 'Interview was successfully destroyed.' }
-      format.json { head :no_content }
+      if @interview.destroy
+        format.html {
+          redirect_to user_interviews_path(@user),
+          notice: 'Interview was successfully destroyed.'
+        }
+      else
+        format.html {
+          redirect_to user_interviews_path(@user),
+          notice: "The schedule can't be edited because it has already been approved or rejected."
+        }
+      end
     end
   end
 
   private
+
     # Use callbacks to share common setup or constraints between actions.
     def set_interview
       @interview = Interview.find(params[:id])
@@ -73,10 +87,13 @@ class InterviewsController < ApplicationController
       params.require(:interview).permit(:date, :approval)
     end
 
-    def correct_user
+    def set_user
       @user = User.find(params[:user_id])
+    end
+
+    def correct_user
       unless @user.id == current_user.id
-        redirect_to(user_interviews_url)
+        redirect_to(user_interviews_url(@user))
         flash[:notice] = "You can't edit and delete it."
       end
     end

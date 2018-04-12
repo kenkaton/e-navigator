@@ -2,5 +2,5 @@
 
 <%= render 'form', interview: @interview %>
 
-<%= link_to 'Show', user_interview_path(@interview.user, @interview) %> |
-<%= link_to 'Back', user_interviews_path(@interview.user) %>
+<%= link_to 'Show', user_interview_path(@user, @interview) %> |
+<%= link_to 'Back', user_interviews_path(@user) %>
