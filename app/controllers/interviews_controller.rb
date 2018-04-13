@@ -64,7 +64,7 @@ class InterviewsController < ApplicationController
   end
 
   def apply
-    UserMailer.apply(User.find(params[:mail_to])).deliver
+    UserMailer.apply(User.find(params[:mail_to]), current_user).deliver
     redirect_to user_interviews_path(@user), notice: "Email was successfully sent to #{User.find(params[:mail_to]).email}"
   end
 

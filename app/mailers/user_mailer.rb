@@ -5,9 +5,9 @@ class UserMailer < ApplicationMailer
   #
   #   en.user_mailer.apply.subject
   #
-  def apply(user)
-    @user = user
-    mail  to: user.email, subject: 'Notification of desired interview date' do |format|
+  def apply(interviewer, interviewee)
+    @interviewer, @interviewee = interviewer, interviewee
+    mail  to: interviewer.email, subject: 'Notification of desired interview date' do |format|
       format.text { render layout: 'mailer' }
     end
   end
