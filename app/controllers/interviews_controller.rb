@@ -29,30 +29,24 @@ class InterviewsController < ApplicationController
   def create
     @interview = current_user.interviews.new(interview_params)
 
-    respond_to do |format|
-      if @interview.save
-        format.html { redirect_to user_interviews_path(@user), notice: 'Interview was successfully created.' }
-      else
-        format.html { render :new }
-      end
+    if @interview.save
+      redirect_to user_interviews_path(@user), notice: 'Interview was successfully created.'
+    else
+      render :new
     end
   end
 
   # PATCH/PUT /interviews/1
   # PATCH/PUT /interviews/1.json
   def update
-    respond_to do |format|
-      if @interview.update(interview_params)
-        format.html { redirect_to user_interviews_path(@user), notice: 'Interview was successfully updated.' }
+    if @interview.update(interview_params)
+      redirect_to user_interviews_path(@user), notice: 'Interview was successfully updated.'
+    else
+      if @user.id == current_user.id
+        render :edit
       else
-        if @user.id == current_user.id
-          format.html { render :edit }
-        else
-          format.html {
-            redirect_to user_interviews_path(@user),
-            notice: "The schedule can't be edited because it has already been approved or rejected."
-          }
-        end
+        redirect_to user_interviews_path(@user),
+        notice: "The schedule can't be edited because it has already been approved or rejected."
       end
     end
   end
@@ -60,25 +54,18 @@ class InterviewsController < ApplicationController
   # DELETE /interviews/1
   # DELETE /interviews/1.json
   def destroy
-    respond_to do |format|
-      if @interview.destroy
-        format.html {
-          redirect_to user_interviews_path(@user),
-          notice: 'Interview was successfully destroyed.'
-        }
-      else
-        format.html {
-          redirect_to user_interviews_path(@user),
-          notice: "The schedule can't be edited because it has already been approved or rejected."
-        }
-      end
+    if @interview.destroy
+      redirect_to user_interviews_path(@user),
+      notice: 'Interview was successfully destroyed.'
+    else
+      redirect_to user_interviews_path(@user),
+      notice: "The schedule can't be edited because it has already been approved or rejected."
     end
   end
 
   def apply
     UserMailer.apply(User.find(params[:mail_to])).deliver
-    redirect_to user_interviews_path(@user),
-    notice: "Email was successfully sent to #{User.find(params[:mail_to]).email}"
+    redirect_to user_interviews_path(@user), notice: "Email was successfully sent to #{User.find(params[:mail_to]).email}"
   end
 
   private
@@ -99,8 +86,7 @@ class InterviewsController < ApplicationController
 
     def correct_user
       unless @user.id == current_user.id
-        redirect_to(user_interviews_url(@user))
-        flash[:notice] = "You can't edit and delete it."
+        redirect_to user_interviews_url(@user), notice: "You can't edit and delete it."
       end
     end
 end
