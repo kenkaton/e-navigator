@@ -15,7 +15,7 @@
       <tr>
         <td><%= interview.date %></td>
         <td><%= interview.approval %></td>
-        <th><%= button_to 'Approve', user_interview_path(user, interview), method: :patch, params: { interview: {  approval: 'approve' } }, data: { confirm: 'Are you sure?' } %></th>
+        <th><%= button_to 'Approve', user_interview_path(user, interview), method: :patch, params: { interview: {  approval: 'approve', interviewer_id: current_user.id } }, data: { confirm: 'Are you sure?' } %></th>
       </tr>
     <% end %>
   </tbody>

@@ -11,4 +11,11 @@ class UserMailer < ApplicationMailer
       format.text { render layout: 'mailer' }
     end
   end
+
+  def notify(interview, interviewer, interviewee)
+    @interview, @interviewer, @interviewee = interview, interviewer, interviewee
+    mail  to: "#{interviewer.email}, #{interviewee.email}", subject: 'Notification of interview schedule' do |format|
+      format.text { render layout: 'mailer' }
+    end
+  end
 end
