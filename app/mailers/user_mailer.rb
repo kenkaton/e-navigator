@@ -12,9 +12,16 @@ class UserMailer < ApplicationMailer
     end
   end
 
-  def notify(interview, interviewer, interviewee)
+  def notify_interviewer(interview, interviewer, interviewee)
     @interview, @interviewer, @interviewee = interview, interviewer, interviewee
-    mail  to: "#{interviewer.email}, #{interviewee.email}", subject: 'Notification of interview schedule' do |format|
+    mail  to: interviewer.email, subject: 'Notification of interview schedule',template_name: 'notify_interviewer' do |format|
+      format.text { render layout: 'mailer' }
+    end
+  end
+
+  def notify_interviewee(interview, interviewer, interviewee)
+    @interview, @interviewer, @interviewee = interview, interviewer, interviewee
+    mail  to: interviewee.email, subject: 'Notification of interview schedule',template_name: 'notify_interviewee' do |format|
       format.text { render layout: 'mailer' }
     end
   end

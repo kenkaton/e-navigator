@@ -28,7 +28,8 @@ class Interview < ApplicationRecord
 
   def notify_the_interview
     if self.approval == 'approve' && self.approval_changed?
-      UserMailer.notify(self, User.find(self.interviewer_id), User.find(self.user_id)).deliver
+      UserMailer.notify_interviewer(self, User.find(self.interviewer_id), User.find(self.user_id)).deliver
+      UserMailer.notify_interviewee(self, User.find(self.interviewer_id), User.find(self.user_id)).deliver
     end
   end
 
