@@ -1,10 +1,9 @@
 source 'https://rubygems.org'
 
 git_source(:github) do |repo_name|
-  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
+  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?('/')
   "https://github.com/#{repo_name}.git"
 end
-
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.4'
@@ -15,9 +14,9 @@ gem 'puma', '~> 3.7'
 # Use Bootstrap
 gem 'bootstrap', '~> 4.0.0'
 # Use Bootstrap form
-gem "bootstrap_form",
-    git: "https://github.com/bootstrap-ruby/bootstrap_form.git",
-    branch: "master"
+gem 'bootstrap_form',
+    git: 'https://github.com/bootstrap-ruby/bootstrap_form.git',
+    branch: 'master'
 # Use jquery for rails
 gem 'jquery-rails'
 # Use SCSS for stylesheets
@@ -33,6 +32,8 @@ gem 'coffee-rails', '~> 4.2'
 gem 'jbuilder', '~> 2.5'
 # Use Device for Authentication
 gem 'devise'
+# .env から環境変数を読み込み
+gem 'dotenv-rails'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -42,6 +43,8 @@ gem 'devise'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+
+  gem 'letter_opener'
 end
 
 group :development do

@@ -7,7 +7,7 @@ class User < ApplicationRecord
   has_many :interviews
 
   def age
-    date_format = "%Y%m%d"
+    date_format = '%Y%m%d'
     (Date.today.strftime(date_format).to_i - self.birthday&.strftime(date_format).to_i) / 10000 if self.birthday
   end
 end

@@ -4,7 +4,7 @@ class Interview < ApplicationRecord
   belongs_to :user
   enum approval: { pending: 0, approve: 1, reject: 2 }
   before_destroy :cannot_destroy_schedule_that_was_approved_or_rejected
-  after_update :reject_other_interviews
+  after_update :reject_other_interviews, :notify_the_interview
 
   def date_cannot_be_in_the_past
     if self.date.present? && self.date < Date.today
@@ -23,6 +23,13 @@ class Interview < ApplicationRecord
     if self.approval.in?(['approve','reject']) && self.date_changed?
       errors[:base] << "The schedule can't be edited because it has already been approved or rejected"
       throw :abort
+    end
+  end
+
+  def notify_the_interview
+    if self.approval == 'approve' && self.approval_changed?
+      UserMailer.notify_interviewer(self, User.find(self.interviewer_id), User.find(self.user_id)).deliver
+      UserMailer.notify_interviewee(self, User.find(self.interviewer_id), User.find(self.user_id)).deliver
     end
   end
 
