@@ -7,7 +7,7 @@ class InterviewsController < ApplicationController
   # GET /interviews.json
   def index
     @interviews = Interview.where(user_id: params[:user_id]).order(:date)
-    @scheduled_interview = @interviews.find_by(approval: 1 )
+    @scheduled_interview = @interviews.find_by(approval: 1)
   end
 
   # GET /interviews/1
@@ -41,13 +41,11 @@ class InterviewsController < ApplicationController
   def update
     if @interview.update(interview_params)
       redirect_to user_interviews_path(@user), notice: 'Interview was successfully updated.'
+    elsif @user.id == current_user.id
+      render :edit
     else
-      if @user.id == current_user.id
-        render :edit
-      else
-        redirect_to user_interviews_path(@user),
-        notice: "The schedule can't be edited because it has already been approved or rejected."
-      end
+      redirect_to user_interviews_path(@user),
+      notice: "The schedule can't be edited because it has already been approved or rejected."
     end
   end
 
